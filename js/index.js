@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
 ((main) => {
-	
+
 	main(this, document, Math, {
 		v2: Vector2,
 		noise: noise
@@ -17,7 +17,7 @@
 		ROUND = Math.round,
 		SIN = Math.sin,
 		COS = Math.cos;
-	
+
 	class Config {
 		constructor(opts) {
 			for (let opt in opts) {
@@ -25,17 +25,17 @@
 			}
 		}
 		set(key, value) {
-			if (!key || !value) 
+			if (!key || !value)
 				return;
 			else
 				this[key] = value;
 		}
 	}
-	
+
 	class Canvas {
 		constructor(selector, context, dimensions) {
 			let self = this;
-			
+
 			window.requestAnimationFrame = (() => {
 				return window.requestAnimationFrame ||
 					window.webkitRequestAnimationFrame ||
@@ -46,7 +46,7 @@
 						window.setTimeout(callback, 1000 / 60);
 					};
 			})();
-			
+
 			if (selector) {
 				this.el = document.querySelector(selector);
 			} else {
@@ -54,7 +54,10 @@
 				document.body.appendChild(this.el);
 			}
 			this.ctx = this.el.getContext(context) || this.el.getContext('2d');
-			this.dimensions = dimensions || { x: 0, y: 0 };
+			this.dimensions = dimensions || {
+				x: 0,
+				y: 0
+			};
 			this.resize();
 			window.addEventListener('resize', self.resize.bind(self));
 		}
@@ -89,18 +92,24 @@
 		resize() {
 			this.el.width = this.dimensions.x = window.innerWidth;
 			this.el.height = this.dimensions.y = window.innerHeight;
-			this.center = { x: this.dimensions.x * 0.5, y: this.dimensions.y * 0.5 };
+			this.center = {
+				x: this.dimensions.x * 0.5,
+				y: this.dimensions.y * 0.5
+			};
 		}
 	}
-	
+
 	class Particle {
 		constructor(x, y) {
-			this.lastPosition = { x:0, y:0 };
+			this.lastPosition = {
+				x: 0,
+				y: 0
+			};
 			this.position = new lib.v2(x, y);
 			this.velocity = new lib.v2();
 		}
 	}
-	
+
 	class Attractor {
 		constructor(x, y) {
 			this.size = 0;
@@ -108,7 +117,7 @@
 			this.position = new lib.v2(x, y);
 		}
 	}
-	
+
 	class Mouse {
 		constructor() {
 			let self = this,
@@ -150,7 +159,7 @@
 			}
 		}
 	}
-	
+
 	class ParticleSystem {
 		constructor() {
 			this.tick = 0;
@@ -181,7 +190,7 @@
 		render() {
 			let self = this;
 			self.update();
-			if(self.tick % 10 === 0)
+			if (self.tick % 10 === 0)
 				self.countDisplay.innerHTML = this.particles.length.toString() + ' Particles';
 			window.requestAnimationFrame(self.render.bind(self));
 		}
@@ -204,7 +213,7 @@
 				this.mouse.dblclick = false;
 			}
 			this.canvas.fill(0, 0, this.canvas.dimensions.x, this.canvas.dimensions.y, this.config.fill);
-			for (i = 3; i > 0; i--){
+			for (i = 3; i > 0; i--) {
 				p = new Particle(RAND() * this.canvas.dimensions.x, RAND() * this.canvas.dimensions.y);
 				this.particles.push(p);
 			}
@@ -218,7 +227,7 @@
 					p.lastPosition.y = p.position.y;
 					noiseVal = lib.noise.simplex3(
 						p.position.x * 0.0015 * (this.mouse.position.x / this.bounds.x + 0.1),
-						p.position.y * 0.0025 * (this.mouse.position.y / this.bounds.y + 0.1), 
+						p.position.y * 0.0025 * (this.mouse.position.y / this.bounds.y + 0.1),
 						this.tick * 0.0015
 					);
 					noiseNorm = ABS(noiseVal);
@@ -259,8 +268,8 @@
 					this.canvas.ctx.save();
 					this.canvas.ctx.globalCompositeOperation = 'lighter';
 					this.canvas.drawLine(
-						p.position.x, p.position.y, 
-						p.lastPosition.x, p.lastPosition.y, 
+						p.position.x, p.position.y,
+						p.lastPosition.x, p.lastPosition.y,
 						colorString, this.config.size
 					);
 					this.canvas.ctx.restore();
