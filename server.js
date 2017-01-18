@@ -25,16 +25,15 @@ http.createServer(function (req, res) {
 
     }
 
-    if(req.url.indexOf('.sass') != -1){ //req.url has the pathname, check if it conatins '.css'
+    // if(req.url.indexOf('.sass') != -1){ //req.url has the pathname, check if it conatins '.css'
 
-      fs.readFile(__dirname + 'style.sass', function (err, data) {
-        if (err) console.log(err);
-        res.writeHead(200, {'Content-Type': 'text/x-sass'});
-        res.write(data);
-        res.end();
-      });
+    //   fs.readFile(__dirname + 'style.sass', function (err, data) {
+    //     if (err) console.log(err);
+    //     res.writeHead(200, {'Content-Type': 'text/x-sass'});
+    //     res.write(data);
+    //     res.end();
+    //   });
 
-    }
+    // }
 
 }).listen(80);
-console.log('Server running at http://127.0.0.1:80');
